@@ -17,15 +17,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
-import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -39,7 +33,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
@@ -54,10 +47,10 @@ import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.Priority
 import com.jasmeet.roadcastAssign.model.location.LocationDetails
 import com.jasmeet.roadcastAssign.utils.Utils
-import com.jasmeet.roadcastAssign.view.theme.sans
+import com.jasmeet.roadcastAssign.view.appComponents.TextComponent
+import com.jasmeet.roadcastAssign.view.appComponents.TopAppBarComponent
 
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LocationScreen(
     navController: NavHostController
@@ -135,28 +128,20 @@ fun LocationScreen(
     }
 
 
-    Scaffold(topBar = {
-        CenterAlignedTopAppBar(
-            title = {
-                Text(text = "Your Location Details are")
-            },
-            navigationIcon = {
-                IconButton(
-                    onClick = {
-                        navController.popBackStack()
-                    }
-                ) {
-                    Icon(
-                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                        contentDescription = null
-                    )
+    Scaffold(
+        topBar = {
+            TopAppBarComponent(
+                title = "Your Location Details are",
+                enableBackButton = true,
+                onBackClick = {
+                    navController.popBackStack()
                 }
-            }
-        )
-    }
+            )
+        }
     ) {
         Column(
             Modifier
+                .background(MaterialTheme.colorScheme.background)
                 .padding(it)
                 .fillMaxSize(),
 
@@ -167,35 +152,26 @@ fun LocationScreen(
                 currentLocation.longitude,
                 context
             )
-            Text(
+            TextComponent(
                 text = "Latitude: ${currentLocation.latitude} ",
                 modifier = Modifier
                     .padding(horizontal = 8.dp)
                     .fillMaxWidth(),
-                fontFamily = sans,
-                color = Color.White,
-                fontWeight = FontWeight.Normal,
-                fontSize = 16.5.sp,
+                textSize = 16.5.sp,
             )
-            Text(
+            TextComponent(
                 text = "Longitude: ${currentLocation.longitude} ",
                 modifier = Modifier
                     .padding(horizontal = 8.dp, vertical = 10.dp)
                     .fillMaxWidth(),
-                fontFamily = sans,
-                color = Color.White,
-                fontWeight = FontWeight.Normal,
-                fontSize = 16.5.sp,
+                textSize = 16.5.sp,
             )
-            Text(
+            TextComponent(
                 text = "Your Full Address : $fullAddress",
                 modifier = Modifier
                     .padding(horizontal = 8.dp)
                     .fillMaxWidth(),
-                fontFamily = sans,
-                color = Color.White,
-                fontWeight = FontWeight.Normal,
-                fontSize = 16.5.sp,
+                textSize = 16.5.sp,
             )
 
 
@@ -226,10 +202,10 @@ fun LocationScreen(
                         verticalArrangement = Arrangement.Center
                     ) {
                         CircularProgressIndicator(Modifier.padding(10.dp), color = Color.Black)
-                        Text(
+                        TextComponent(
                             text = "Fetching your Location",
-                            Modifier.padding(10.dp),
-                            color = Color.Black
+                            modifier = Modifier.padding(10.dp),
+                            textColor = Color.Black
                         )
 
                     }

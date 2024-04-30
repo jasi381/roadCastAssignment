@@ -18,14 +18,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -42,7 +35,6 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -52,11 +44,12 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import coil.compose.SubcomposeAsyncImage
 import com.jasmeet.roadcastAssign.utils.ImgSize
 import com.jasmeet.roadcastAssign.utils.Utils
-import com.jasmeet.roadcastAssign.view.theme.sans
+import com.jasmeet.roadcastAssign.view.appComponents.HorizontalDividerComponent
+import com.jasmeet.roadcastAssign.view.appComponents.TextComponent
+import com.jasmeet.roadcastAssign.view.appComponents.TopAppBarComponent
 import com.jasmeet.roadcastAssign.viewModel.TopRatedMoviesViewModel
 
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MovieListScreen(
     navController: NavHostController,
@@ -67,27 +60,18 @@ fun MovieListScreen(
 
     Scaffold(
         topBar = {
-            CenterAlignedTopAppBar(
-                title = {
-                    Text(text = "Movie List")
-                },
-                navigationIcon = {
-                    IconButton(
-                        onClick = {
-                            navController.popBackStack()
-                        }
-                    ) {
-                        Icon(
-                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = null
-                        )
-                    }
+            TopAppBarComponent(
+                title = "Movie List",
+                enableBackButton = true,
+                onBackClick = {
+                    navController.popBackStack()
                 }
             )
         }
     ) {
         LazyColumn(
             modifier = Modifier
+                .background(MaterialTheme.colorScheme.background)
                 .fillMaxSize()
                 .padding(it)
 
@@ -161,18 +145,16 @@ fun MovieListScreen(
                         horizontalAlignment = Alignment.CenterHorizontally,
                         verticalArrangement = Arrangement.Center
                     ) {
-                        Text(
+                        TextComponent(
                             text = topRatedMovieResponseState[index]?.title ?: "",
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(5.dp),
-                            color = Color.White,
-                            fontSize = 15.sp,
+                            textSize = 15.sp,
                             textAlign = TextAlign.Center,
                             fontWeight = FontWeight.SemiBold,
-                            fontFamily = sans
                         )
-                        Text(
+                        TextComponent(
                             text = topRatedMovieResponseState[index]?.overview?.replace(
                                 "\\s+".toRegex(),
                                 " "
@@ -180,17 +162,16 @@ fun MovieListScreen(
                             modifier = Modifier
                                 .padding(horizontal = 5.dp)
                                 .fillMaxWidth(),
-                            color = Color.White,
-                            fontSize = 14.sp,
+                            textSize = 14.sp,
                             textAlign = TextAlign.Center,
-                            maxLines = 2,
-                            overflow = TextOverflow.Ellipsis,
-                            fontFamily = sans
                         )
                     }
 
                 }
-                HorizontalDivider(Modifier.padding(horizontal = 5.dp))
+                HorizontalDividerComponent(
+                    modifier = Modifier.padding(horizontal = 5.dp),
+                    color = MaterialTheme.colorScheme.onBackground
+                )
 
             }
             topRatedMovieResponseState.apply {
